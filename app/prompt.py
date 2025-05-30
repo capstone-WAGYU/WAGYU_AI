@@ -9,12 +9,14 @@ def make_prompt(bank_1: str, bank_2: str) -> str:
     출력 형식은 아래와 같다:
     [
       {{
-        "product_name_1": "첫 번째 은행의 금융상품 이름", 
+        "product_name_1": "첫 번째 은행의 금융상품 이름",
         "interest_rate_1" : "첫번째 은행의 이율을 숫자와 '%'로만 서술",
         "product_reason_1": "안정성, 사회초년생에게 필요한 이유를 짧게 서술",
+        "product_link_1" : "첫 번째 은행의 금융상품 링크",
         "product_name_2": "두 번째 은행의 금융상품 이름",
         "interest_rate_2" : "두번째 은행의 이율을 숫자와 '%'로만 서술",
         "product_reason_2": "안정성, 사회초년생에게 필요한 이유를 짧게 서술"
+        "product_link_2" : "두 번째 은행의 금융상품 링크"
       }}
     ]
     금융상품들은 상품마다 비슷한 이름을 사용하지 말고, 랜덤하게 골라.
@@ -22,10 +24,3 @@ def make_prompt(bank_1: str, bank_2: str) -> str:
     출력 형식 외에는 어떤 텍스트도 포함하지 마.
     다른 형식으로 출력하면 죽는줄알아
     """
-
-# product_name_1 = "첫번째은행 상품이름"
-# product_name_2 = "두번째은행 상품이름"
-# interest_rate_1 = "첫번째은행 이율"
-# interest_rate_2 = "두번째은행 이율"
-# product_reason_1 = "첫번째은행 상품 이유"
-# product_reason_2 = "두번째은행 상품 이유"
