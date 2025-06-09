@@ -8,3 +8,6 @@ langchain_openai
 dotenv
 json
 pydantic
+faiss-cpu
+uvicorn
+requests
