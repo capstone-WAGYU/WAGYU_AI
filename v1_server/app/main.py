@@ -5,30 +5,8 @@ from app.db import save_result_to_db
 from app.rag import build_rag_system
 from app.prompt import make_prompt
 from app.utils import json_parse
-
-
-app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-qa = build_rag_system()
-# 라우팅
-@app.post("/invrecom", status_code=201)
-async def invest_recommend(req: InvestRequest):
-    query = make_prompt(req.bank_1, req.bank_2)
-    res = qa.invoke(query)
-    parsed_json = json_parse(res["result"])
-    if "error" not in parsed_json:
-        save_result_to_db(parsed_json)
-    return parsed_json
-
-# 챗봇
+from app.credit_rating_prompt import getGrade
+from app.chatbot_prompt import chatbot_prompt
 
 from pydantic import BaseModel
 from dotenv import load_dotenv
@@ -41,19 +19,6 @@ import datetime
 from langchain_openai import ChatOpenAI
 from fastapi.middleware.cors import CORSMiddleware
 
-load_dotenv()
-llm = ChatOpenAI(model='gpt-4o-mini', api_key=os.environ.get("OPENAI_API_KEY"))
-prompt = ChatPromptTemplate.from_template(f"""
-너는 개인 자산 관리를 도와주는 전문가 챗봇이야.
-너는 세금 관련 질문에 대답할 수 있어.
-너는 한국어로 대답해야 해.
-아래 Question을 보고, 사용자가 원하는 답변을 해줘.
-
-Question: {{question}}
-""")
-
-tax_chain = prompt|llm|StrOutputParser()
-
 app = FastAPI()
 
 app.add_middleware(
@@ -63,6 +28,31 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+qa = build_rag_system()
+
+# 금융상품 추천
+@app.post("/invrecom", status_code=201)
+async def invest_recommend(req: InvestRequest):
+    query = make_prompt(req.bank_1, req.bank_2)
+    res = qa.invoke(query)
+    parsed_json = json_parse(res["result"])
+    if "error" not in parsed_json:
+        save_result_to_db(parsed_json)
+    return parsed_json
+
+# 신용등급
+@app.post("/getGrade", status_code=201)
+async def getGrade (PH: int, PH_1: int, DL: int, CHL: int, CAF: int, NCA: int, CUR: int):
+    result = getGrade(PH, PH_1, DL, CHL, CAF, NCA, CUR)
+    return {"result": result}
+
+# 챗봇
+
+llm = ChatOpenAI(model='gpt-4o-mini', api_key=os.environ.get("OPENAI_API_KEY"))
+
+
+tax_chain = chatbot_prompt|llm|StrOutputParser()
 
 Mongourl= os.environ.get("MONGODB_URL")
 client = MongoClient(Mongourl)
