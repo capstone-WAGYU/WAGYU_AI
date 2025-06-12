@@ -27,4 +27,5 @@ def make_prompt(bank_1: str, bank_2: str):
     product_reason 둘이 느낌이 비슷하면 너의 재량으로 수정해서 차이점을 설명하지만, JSON 형식을 지켜.
     출력 형식 외에는 어떤 텍스트도 포함하지 마.
     다른 형식으로 출력하면 죽는줄알아. 무조건 JSON이야.
+    JSON이라고 문자열말고씨발련아
     """

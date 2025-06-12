@@ -3,7 +3,7 @@ from app.db import save_result_to_db
 from app.rag import build_rag_system
 from app.prompt import make_prompt
 from app.utils import json_parse
-from app.credit_rating_prompt import getGrade
+from app.credit_rating_prompt import getcreditGrade
 from app.chatbot_prompt import chatbot_prompt
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -39,7 +39,7 @@ async def invest_recommend(req: InvestRequest):
 # 신용등급
 @app.post("/getGrade", status_code=201)
 async def getGrade (PH: int, PH_1: int, DL: int, CHL: int, CAF: int, NCA: int, CUR: int):
-    result = getGrade(PH, PH_1, DL, CHL, CAF, NCA, CUR)
+    result = await getcreditGrade(PH, PH_1, DL, CHL, CAF, NCA, CUR)
     return {"result": result}
 
 # 챗봇
