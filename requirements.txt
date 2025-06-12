@@ -11,3 +11,4 @@ pydantic
 faiss-cpu
 uvicorn
 requests
+datetime

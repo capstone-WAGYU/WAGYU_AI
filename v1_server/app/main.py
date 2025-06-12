@@ -1,5 +1,3 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from app.schemas import InvestRequest
 from app.db import save_result_to_db
 from app.rag import build_rag_system
@@ -7,13 +5,10 @@ from app.prompt import make_prompt
 from app.utils import json_parse
 from app.credit_rating_prompt import getGrade
 from app.chatbot_prompt import chatbot_prompt
-
+from fastapi import FastAPI
 from pydantic import BaseModel
-from dotenv import load_dotenv
 import os
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.prompts import ChatPromptTemplate
-from fastapi import FastAPI
 from pymongo import MongoClient
 import datetime
 from langchain_openai import ChatOpenAI
@@ -50,10 +45,7 @@ async def getGrade (PH: int, PH_1: int, DL: int, CHL: int, CAF: int, NCA: int, C
 # 챗봇
 
 llm = ChatOpenAI(model='gpt-4o-mini', api_key=os.environ.get("OPENAI_API_KEY"))
-
-
 tax_chain = chatbot_prompt|llm|StrOutputParser()
-
 Mongourl= os.environ.get("MONGODB_URL")
 client = MongoClient(Mongourl)
 db = client["chat"]
