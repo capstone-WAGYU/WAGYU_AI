@@ -38,9 +38,10 @@ async def invest_recommend(req: InvestRequest):
 
 # 신용등급
 @app.post("/getGrade", status_code=201)
-async def getGrade (PH: int, PH_1: int, DL: int, CHL: int, CAF: int, NCA: int, CUR: int):
+async def get_grade(PH: int, PH_1: int, DL: int, CHL: int, CAF: int, NCA: int, CUR: int):
     result = await getcreditGrade(PH, PH_1, DL, CHL, CAF, NCA, CUR)
-    return {"result": result}
+    return result
+
 
 # 챗봇
 

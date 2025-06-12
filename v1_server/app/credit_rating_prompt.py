@@ -1,11 +1,17 @@
+# main.py
+from fastapi import FastAPI
 import os
 from dotenv import load_dotenv
 from openai import AsyncOpenAI
 import json
 
+app = FastAPI()
+
+# GPT 클라이언트
 load_dotenv()
 client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
+# GPT 호출 함수
 async def getcreditGrade(PH, PH_1, DL, CHL, CAF, NCA, CUR):
     prompt = f"""
 너는 신용등급 판별기이다.
@@ -38,23 +44,29 @@ async def getcreditGrade(PH, PH_1, DL, CHL, CAF, NCA, CUR):
   351~500  : 4등급
   350 이하 : 5등급
 
-다른 어떤 출력도 하지 말고 아래 형식으로만 출력해:
-
+📢 아래 JSON 형식으로만 출력해. 절대로 다른 설명, 줄바꿈, 코드블럭 포함하지 마:
 [
   {{
-    result: "{{사용자 이름}}님의 신용등급은 {{등급}}입니다."
-    tip_1: "수치를 보고 너가 팁을 한 줄 적어"
-    tip_2: "하나 더"
+    "result": "사용자님의 신용등급은 {{등급}}입니다.",
+    "tip_1": "팁 한 줄 (최대 50자)",
+    "tip_2": "또 다른 팁 한 줄 (최대 50자)"
   }}
 ]
-팁은 길어도 되지만 최대 50자 이내로.
-다시 말한다. 다른 출력은 모두 생략한다.
-계산식, 다른 것 다 필요없어. 위의 양식으로만 출력한다
+
+
+다른거 출력하지 말라 했다. 하면 GEMINI로 바꿀줄알아 씨발아
 """
 
     response = await client.chat.completions.create(
         model="gpt-4",
-        messages=[{"role": "user", "content": prompt}]
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.7,
     )
-    response = json.loads(response.choices[0].message.content)
-    return response.choices[0].message.content
+
+    content = response.choices[0].message.content.strip()
+
+    try:
+        parsed = json.loads(content)
+        return parsed
+    except json.JSONDecodeError as e:
+        raise ValueError(f"GPT 응답이 JSON이 아님: {e}\n받은 내용: {content}")
