@@ -5,6 +5,7 @@ from app.prompt import make_prompt
 from app.utils import json_parse
 from app.credit_rating_prompt import getcreditGrade
 from app.chatbot_prompt import chatbot_prompt
+from app.invest_recommend import invest
 from fastapi import FastAPI
 from pydantic import BaseModel
 import os
@@ -26,8 +27,13 @@ app.add_middleware(
 
 qa = build_rag_system()
 
+@app.get("/")
+def root():
+    return {"Message": "This isn't Error. Rewrite your URL like 'localhost:8000/docs'", 
+            "AAA": "Swagger로 가야 뭐든하지병딱아 localhost:8000/docs"}
+
 # 금융상품 추천
-@app.post("/invrecom", status_code=201)
+@app.post("/prodRecom", status_code=201)
 async def invest_recommend(req: InvestRequest):
     query = make_prompt(req.bank_1, req.bank_2)
     res = qa.invoke(query)
@@ -35,6 +41,15 @@ async def invest_recommend(req: InvestRequest):
     if "error" not in parsed_json:
         save_result_to_db(parsed_json)
     return parsed_json
+
+# 투자 추천
+@app.post("/invRecom", status_code = 201)
+def invest_recommend(
+    return_value: float,
+    invest_period: int,
+    guaranteed_principal: bool):
+    recommendation = invest(return_value, invest_period, guaranteed_principal)
+    return recommendation
 
 # 신용등급
 @app.post("/getGrade", status_code=201)
@@ -45,7 +60,7 @@ async def get_grade(PH: int, PH_1: int, DL: int, CHL: int, CAF: int, NCA: int, C
 
 # 챗봇
 
-llm = ChatOpenAI(model='gpt-4o-mini', api_key=os.environ.get("OPENAI_API_KEY"))
+llm = ChatOpenAI(model='gpt-4', api_key=os.environ.get("OPENAI_API_KEY"))
 tax_chain = chatbot_prompt|llm|StrOutputParser()
 Mongourl= os.environ.get("MONGODB_URL")
 client = MongoClient(Mongourl)

@@ -12,13 +12,13 @@ def make_prompt(bank_1: str, bank_2: str):
         "product_name_1": "첫 번째 은행의 금융상품 이름",
         "interest_rate_1" : "첫번째 은행의 이율을 숫자와 '%'로만 서술",
         "product_reason_1": "안정성, 사회초년생에게 필요한 이유를 짧게 서술",
-        "init_term_1": "첫 번째 은행의 상품의 초기 기간을 서술",
+        "init_term_1": "첫 번째 은행의 상품의 가입 조건(나이 등)을 서술",
         "period_1": "첫 번째 은행의 가입 기간을 서술",
         "product_link_1" : "첫 번째 은행의 금융상품 링크",
         "product_name_2": "두 번째 은행의 금융상품 이름",
         "interest_rate_2" : "두번째 은행의 이율을 숫자와 '%'로만 서술",
         "product_reason_2": "안정성, 사회초년생에게 필요한 이유를 짧게 서술"
-        "init_term_1": "두 번째 은행의 상품의 초기 기간을 서술",
+        "init_term_1": "두 번째 은행의 상품의 가입 조건(나이 등)을 서술",
         "period_1": "두 번째 은행의 가입 기간을 서술",
         "product_link_2" : "두 번째 은행의 금융상품 링크"
       }}

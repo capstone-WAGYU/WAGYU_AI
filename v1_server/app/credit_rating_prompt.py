@@ -11,7 +11,28 @@ app = FastAPI()
 load_dotenv()
 client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# GPT 호출 함수
+def calculateScore(PH, DL, CHL, CAF, NCA, CUR):
+    return (
+        PH * 35 +
+        DL * 25 +
+        CHL * 15 +
+        CAF * 10 +
+        NCA * 5 +
+        CUR * 10
+    )
+
+def classifyGrade(score):
+    if score >= 801:
+        return "1등급"
+    elif score >= 651:
+        return "2등급"
+    elif score >= 501:
+        return "3등급"
+    elif score >= 351:
+        return "4등급"
+    else:
+        return "5등급"
+
 async def getcreditGrade(PH, PH_1, DL, CHL, CAF, NCA, CUR):
     prompt = f"""
 너는 신용등급 판별기이다.
@@ -44,15 +65,14 @@ async def getcreditGrade(PH, PH_1, DL, CHL, CAF, NCA, CUR):
   351~500  : 4등급
   350 이하 : 5등급
 
-📢 아래 JSON 형식으로만 출력해. 절대로 다른 설명, 줄바꿈, 코드블럭 포함하지 마:
+아래 JSON 형식으로만 출력해. 절대로 다른 설명, 줄바꿈, 코드블럭 포함하지 마:
 [
   {{
     "result": "사용자님의 신용등급은 {{등급}}입니다.",
-    "tip_1": "팁 한 줄 (최대 50자)",
-    "tip_2": "또 다른 팁 한 줄 (최대 50자)"
+    "tip_1": "팁 한 줄 (최소 50자)",
+    "tip_2": "또 다른 팁 한 줄 (최소 50자)"
   }}
 ]
-
 
 다른거 출력하지 말라 했다. 하면 GEMINI로 바꿀줄알아 씨발아
 """
