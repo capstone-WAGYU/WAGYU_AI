@@ -60,7 +60,7 @@ async def get_grade(PH: int, PH_1: int, DL: int, CHL: int, CAF: int, NCA: int, C
 
 # 챗봇
 
-llm = ChatOpenAI(model='gpt-4', api_key=os.environ.get("OPENAI_API_KEY"))
+llm = ChatOpenAI(model='gpt-4o', api_key=os.environ.get("OPENAI_API_KEY"))
 tax_chain = chatbot_prompt|llm|StrOutputParser()
 Mongourl= os.environ.get("MONGODB_URL")
 client = MongoClient(Mongourl)
