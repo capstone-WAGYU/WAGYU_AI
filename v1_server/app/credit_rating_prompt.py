@@ -45,7 +45,7 @@ async def getcreditGrade(PH, PH_1, DL, CHL, CAF, NCA, CUR):
   - 신용이력: {CHL}년
   - 신용거래빈도: {CAF}회 (1년 단위) 
   - 신규신용거래: {NCA}건
-  - 신용 사용률: {CUR}만원
+  - 신용 사용률: {CUR}%
 
 - 각 요소 가중치:
   - 결제이력: 35

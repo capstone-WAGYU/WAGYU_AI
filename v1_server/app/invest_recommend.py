@@ -21,20 +21,23 @@ def invest(return_value, invest_period, guaranteed_principal):
         이 세 가지를 종합적으로 고려해서 추천 여부를 판단해줘.
 
         출력은 아래 JSON 형식으로만 해줘.
-        {{
-            "deposit_recommend": "예금 추천여부를 한 문장으로",
-            "deposit_reason": "예금 추천 이유를 최소 100자로",
-            "deposit_keyword": "추천하는 이유 3가지를 키워드로",
-            "savings_recommend": "적금 추천여부를 한 문장으로",
-            "savings_reason": "적금 추천 이유를 최소 100자로",
-            "savings_keyword": "추천하는 이유 3가지를 키워드로",
-            "fund_recommend": "펀드 추천여부를 한 문장으로",
-            "fund_reason": "펀드 추천 이유를 최소 100자로",
-            "fund_keyword": "추천하는 이유 3가지를 키워드로",
-            "stock_recommend": "주식 추천여부를 한 문장으로",
-            "stock_reason": "주식 추천 이유를 최소 100자로",
-            "stock_keyword": "추천하는 이유 3가지를 키워드로",
-        }}
+        [
+        
+            {{
+                "deposit_recommend": "예금 추천여부를 한 문장으로",
+                "deposit_reason": "예금 추천 이유를 최소 100자로",
+                "deposit_keyword": "추천하는 이유 3가지를 키워드로",
+                "savings_recommend": "적금 추천여부를 한 문장으로",
+                "savings_reason": "적금 추천 이유를 최소 100자로",
+                "savings_keyword": "추천하는 이유 3가지를 키워드로",
+                "fund_recommend": "펀드 추천여부를 한 문장으로",
+                "fund_reason": "펀드 추천 이유를 최소 100자로",
+                "fund_keyword": "추천하는 이유 3가지를 키워드로",
+                "stock_recommend": "주식 추천여부를 한 문장으로",
+                "stock_reason": "주식 추천 이유를 최소 100자로",
+                "stock_keyword": "추천하는 이유 3가지를 키워드로",
+            }}
+        ]
         하나 이상은 추천해야 한다
         다른 이상한 출력 내놓으면 죽을 줄 알아
     """

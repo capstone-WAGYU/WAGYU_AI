@@ -18,6 +18,6 @@ def build_rag_system():
     docs = splitter.create_documents([bank_text])
     embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
     vectorstore = FAISS.from_documents(docs, embeddings)
-    llm = ChatOpenAI(model="gpt-4o", openai_api_key= openai_api_key, temperature=1.0)
+    llm = ChatOpenAI(model="gpt-4o-mini", openai_api_key= openai_api_key, temperature=1.0)
 
     return RetrievalQA.from_chain_type(llm=llm, retriever=vectorstore.as_retriever())
