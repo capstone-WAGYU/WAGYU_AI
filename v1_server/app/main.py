@@ -1,4 +1,5 @@
 from app.schemas import InvestRequest
+from app.schemas import GradeRequest
 from app.db import save_result_to_db
 from app.rag import build_rag_system
 from app.prompt import make_prompt
@@ -53,8 +54,8 @@ def invest_recommend(
 
 # 신용등급
 @app.post("/getGrade", status_code=201)
-async def get_grade(PH: int, PH_1: int, DL: int, CHL: int, CAF: int, NCA: int, CUR: int):
-    result = await getcreditGrade(PH, PH_1, DL, CHL, CAF, NCA, CUR)
+async def get_grade(data: GradeRequest):
+    result = await getcreditGrade(data.PH, data.PH_1, data.DL, data.CHL, data.CAF, data.NCA, data.CUR)
     return result
 
 

@@ -20,7 +20,7 @@ def invest(return_value, invest_period, guaranteed_principal):
         원금보장여부 : 10%
         이 세 가지를 종합적으로 고려해서 추천 여부를 판단해줘.
 
-        출력은 아래 JSON 형식으로만 해줘.
+        출력은 아래 JSON 형식으로만 해줘. 어디 틀에 씌우지 말고 딱 저렇게만 출력해
         [
         
             {{
