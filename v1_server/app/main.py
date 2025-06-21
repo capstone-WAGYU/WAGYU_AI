@@ -1,16 +1,18 @@
-from app.schemas import InvestRequest
-from app.schemas import GradeRequest
+from app.prodrecom_schemas import InvestRequest
+from app.prodrecom_schemas import GradeRequest
 from app.db import save_result_to_db
-from app.rag import build_rag_system
-from app.prompt import make_prompt
-from app.utils import json_parse
+from app.prodrecom_rag import build_rag_system
+from app.prodrecom_prompt import make_prompt
+from app.prodrecom_utils import json_parse
 from app.credit_rating_prompt import getcreditGrade
 from app.chatbot_prompt import chatbot_prompt
 from app.invest_recommend import invest
+from app.prodrecom_fewshot import get_product_prompt_template
 from fastapi import FastAPI
 from pydantic import BaseModel
 import os
 from langchain_core.output_parsers import StrOutputParser
+from langchain.prompts import FewShotPromptTemplate, PromptTemplate
 from pymongo import MongoClient
 import datetime
 from langchain_openai import ChatOpenAI
@@ -27,6 +29,7 @@ app.add_middleware(
 )
 
 qa = build_rag_system()
+prompt_template = get_product_prompt_template()
 
 @app.get("/")
 def root():
@@ -36,11 +39,13 @@ def root():
 # 금융상품 추천
 @app.post("/prodRecom", status_code=201)
 async def invest_recommend(req: InvestRequest):
-    query = make_prompt(req.bank_1, req.bank_2)
+    query = prompt_template.format(bank_1=req.bank_1, bank_2=req.bank_2)
     res = qa.invoke(query)
     parsed_json = json_parse(res["result"])
+
     if "error" not in parsed_json:
         save_result_to_db(parsed_json)
+
     return parsed_json
 
 # 투자 추천
@@ -61,8 +66,8 @@ async def get_grade(data: GradeRequest):
 
 # 챗봇
 
-llm = ChatOpenAI(model='gpt-4o', api_key=os.environ.get("OPENAI_API_KEY"))
-tax_chain = chatbot_prompt|llm|StrOutputParser()
+llm = ChatOpenAI(model='gpt-4o-mini', api_key=os.environ.get("OPENAI_API_KEY"))
+tax_chain = chatbot_prompt | llm | StrOutputParser()
 Mongourl= os.environ.get("MONGODB_URL")
 client = MongoClient(Mongourl)
 db = client["chat"]

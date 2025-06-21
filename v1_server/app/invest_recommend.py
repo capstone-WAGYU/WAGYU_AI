@@ -43,7 +43,7 @@ def invest(return_value, invest_period, guaranteed_principal):
     """
 
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4o-mini",
         temperature=1.0,
         messages=[{"role": "user", "content": prompt}]
     )

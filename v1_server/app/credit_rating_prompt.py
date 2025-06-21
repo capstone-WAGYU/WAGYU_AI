@@ -78,7 +78,7 @@ async def getcreditGrade(PH, PH_1, DL, CHL, CAF, NCA, CUR):
 """
 
     response = await client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.7,
     )
