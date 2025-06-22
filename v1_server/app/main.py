@@ -15,6 +15,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain.prompts import FewShotPromptTemplate, PromptTemplate
 from pymongo import MongoClient
 import datetime
+from datetime import date
 from langchain_openai import ChatOpenAI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -52,8 +53,8 @@ async def invest_recommend(req: InvestRequest):
 @app.post("/invRecom", status_code = 201)
 def invest_recommend(
     return_value: float,
-    invest_period: int,
-    guaranteed_principal: bool):
+    invest_period: date,
+    guaranteed_principal: str):
     recommendation = invest(return_value, invest_period, guaranteed_principal)
     return recommendation
 
