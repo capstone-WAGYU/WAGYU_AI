@@ -1,8 +1,8 @@
-from app.prodrecom_schemas import InvestRequest
-from app.prodrecom_schemas import GradeRequest
+from app.schemas import ProductRequest
+from app.schemas import GradeRequest
+from app.schemas import InvestRequest
 from app.db import save_result_to_db
 from app.prodrecom_rag import build_rag_system
-from app.prodrecom_prompt import make_prompt
 from app.prodrecom_utils import json_parse
 from app.credit_rating_prompt import getcreditGrade
 from app.chatbot_prompt import chatbot_prompt
@@ -11,8 +11,8 @@ from app.prodrecom_fewshot import get_product_prompt_template
 from fastapi import FastAPI
 from pydantic import BaseModel
 import os
+from datetime import date
 from langchain_core.output_parsers import StrOutputParser
-from langchain.prompts import FewShotPromptTemplate, PromptTemplate
 from pymongo import MongoClient
 import datetime
 from datetime import date
@@ -39,7 +39,7 @@ def root():
 
 # 금융상품 추천
 @app.post("/prodRecom", status_code=201)
-async def invest_recommend(req: InvestRequest):
+async def invest_recommend(req: ProductRequest):
     query = prompt_template.format(bank_1=req.bank_1, bank_2=req.bank_2)
     res = qa.invoke(query)
     parsed_json = json_parse(res["result"])
@@ -51,11 +51,8 @@ async def invest_recommend(req: InvestRequest):
 
 # 투자 추천
 @app.post("/invRecom", status_code = 201)
-def invest_recommend(
-    return_value: float,
-    invest_period: date,
-    guaranteed_principal: str):
-    recommendation = invest(return_value, invest_period, guaranteed_principal)
+def invest_recommend(data: InvestRequest):
+    recommendation = invest(data.interestRate, data.startDate, data.endDate, data.principalGuarantee)
     return recommendation
 
 # 신용등급
