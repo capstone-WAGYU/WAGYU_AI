@@ -66,7 +66,7 @@ async def get_grade(data: GradeRequest):
 
 llm = ChatOpenAI(model='gpt-4o-mini', api_key=os.environ.get("OPENAI_API_KEY"))
 tax_chain = chatbot_prompt | llm | StrOutputParser()
-Mongourl= os.environ.get("MONGODB_URL")
+Mongourl= os.environ.get("MONGO_DB_URL")
 client = MongoClient(Mongourl)
 db = client["chat"]
 collection = db["chat_log"]
