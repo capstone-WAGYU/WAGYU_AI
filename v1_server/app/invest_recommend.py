@@ -35,21 +35,28 @@ def invest(interestRate: float, startDate: date, endDate: date, principalGuarant
             }}
         ]
         하나 이상은 추천해야 한다
-        다른 이상한 출력 내놓으면 죽을 줄 알아
     """
 
     response = client.chat.completions.create(
         model="gpt-4o-mini",
-        temperature=1.0,
-        messages=[{"role": "user", "content": prompt}]
+        temperature=0.2,
+        messages=[
+                  {"role": "system", "content": "넌 오직 JSON만 출력하는 투자 추천 봇이다. JSON 외 텍스트는 절대 쓰지 마라."},
+                  {"role": "user", "content": prompt}
+                ]
     )
 
-    raw_text = response.choices[0].message.content.strip()
     
-    # JSON 문자열을 Python 딕셔너리로 파싱
+
+    import re
+    raw_text = response.choices[0].message.content.strip()
     try:
-        result = json.loads(raw_text)
-    except json.JSONDecodeError:
-        raise ValueError(f"응답 파싱 실패: {raw_text}")
+        json_match = re.search(r'\[\s*{.*?}\s*]', raw_text, re.DOTALL)
+        if not json_match:
+            raise ValueError("응답에서 JSON 블록을 찾을 수 없음.")
+        json_str = json_match.group(0)
+        result = json.loads(json_str)
+    except Exception as e:
+        raise ValueError(f"JSON 파싱 실패: {e}\n원본:\n{raw_text}")
 
     return result
