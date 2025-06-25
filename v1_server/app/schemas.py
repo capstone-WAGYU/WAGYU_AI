@@ -18,3 +18,6 @@ class InvestRequest(BaseModel):
     startDate: date
     endDate: date
     principalGuarantee: str
+
+class QueryInput(BaseModel):
+    question: str

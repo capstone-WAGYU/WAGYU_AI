@@ -1,6 +1,7 @@
 from app.schemas import ProductRequest
 from app.schemas import GradeRequest
 from app.schemas import InvestRequest
+from app.schemas import QueryInput
 from app.db import save_result_to_db
 from app.prodrecom_rag import build_rag_system
 from app.prodrecom_utils import json_parse
@@ -8,6 +9,7 @@ from app.credit_rating_prompt import getcreditGrade
 from app.chatbot_prompt import chatbot_prompt
 from app.invest_recommend import invest
 from app.prodrecom_fewshot import get_product_prompt_template
+from app.chatbot_keyword import get_key
 from fastapi import FastAPI
 from pydantic import BaseModel
 import os
@@ -70,12 +72,10 @@ Mongourl= os.environ.get("MONGO_DB_URL")
 client = MongoClient(Mongourl)
 db = client["chat"]
 collection = db["chat_log"]
+messages = collection.find().sort("time",1)
 
-class QueryInput(BaseModel):
-    question: str
 @app.get("/chat")
 async def get_chat():
-    messages = collection.find().sort("time",1)
     chat_history = []
     for message in messages:
         chat_history.append({
@@ -99,3 +99,9 @@ async def ask_tax(query: QueryInput):
         "time": timestamp
     })
     return {"response": result}
+
+@app.get("/key")
+async def get_key():
+    key = get_key(messages)
+    return key
+    

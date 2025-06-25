@@ -12,3 +12,4 @@ faiss-cpu
 uvicorn
 requests
 datetime
+keybert
