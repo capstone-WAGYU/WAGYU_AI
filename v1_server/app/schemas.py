@@ -1,8 +1,9 @@
 from pydantic import BaseModel
 from datetime import date
 class ProductRequest(BaseModel):
-    bank_1: str
-    bank_2: str
+    period: str
+    bank: str
+    country: str
 
 class GradeRequest(BaseModel):
     PH: str

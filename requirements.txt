@@ -1,15 +1,14 @@
 fastapi
 pymongo
 langchain
-os
 openai
 langchain_community
 langchain_openai
 dotenv
-json
 pydantic
 faiss-cpu
 uvicorn
 requests
 datetime
 keybert
+tf-keras
