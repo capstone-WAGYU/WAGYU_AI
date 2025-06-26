@@ -2,7 +2,6 @@ from app.schemas import ProductRequest
 from app.schemas import GradeRequest
 from app.schemas import InvestRequest
 from app.schemas import QueryInput
-from app.db import save_result_to_db
 from app.prodrecom_rag import build_rag_system
 from app.prodrecom_utils import json_parse
 from app.credit_rating_prompt import getcreditGrade
@@ -45,9 +44,6 @@ async def invest_recommend(req: ProductRequest):
     query = prompt_template.format(period=req.period, bank=req.bank, country = req.country)
     res = qa.invoke(query)
     parsed_json = json_parse(res["result"])
-
-    if "error" not in parsed_json:
-        save_result_to_db(parsed_json)
 
     return parsed_json
 
