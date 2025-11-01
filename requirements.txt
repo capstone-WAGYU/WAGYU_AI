@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-konlpy
-JPype1-0.5.7-cp27-none-win_amd64.whl
-=======
 trl
 peft
 transformers
 bitsandbytes
 datasets
 konlpy
->>>>>>> 659dc71 (feature: 랜덤스왑구현)
