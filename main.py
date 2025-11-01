@@ -20,11 +20,9 @@ model = AutoModelForCausalLM.from_pretrained(
     trust_remote_code=False,
 )
 
-# 훈련 최적화 설정
 model.config.use_cache = False
 model.gradient_checkpointing_enable()
 
-# 4bit 훈련 준비 (Gradient Checkpointing 옵션 함께 지정)
 model = prepare_model_for_kbit_training(
     model,
     use_gradient_checkpointing=True,
@@ -34,14 +32,14 @@ model = prepare_model_for_kbit_training(
 tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
 if tokenizer.pad_token is None:
     tokenizer.add_special_tokens({"pad_token": tokenizer.eos_token})
-    model.resize_token_embeddings(len(tokenizer))  # 반드시 한 줄 추가!
+    model.resize_token_embeddings(len(tokenizer))
 tokenizer.padding_side = 'right'
 
 from peft import LoraConfig, get_peft_model
 
 peft_config = LoraConfig(
-    r=32,                      # r 16~64 중 시작
-    lora_alpha=64,             # 보통 2*r
+    r=32, 
+    lora_alpha=64, 
     lora_dropout=0.05,
     bias="none",
     task_type="CAUSAL_LM",
