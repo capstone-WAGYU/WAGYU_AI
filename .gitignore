@@ -1,1 +1,4 @@
 augment/통합_데이터셋_증강.json
+.venv/
+__pycache__/
+.python-version
