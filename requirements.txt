@@ -1,0 +1,14 @@
+fastapi
+pymongo
+langchain
+openai
+langchain_community
+langchain_openai
+dotenv
+pydantic
+faiss-cpu
+uvicorn
+requests
+datetime
+keybert
+tf-keras
