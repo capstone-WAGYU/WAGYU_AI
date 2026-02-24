@@ -1,3 +1,5 @@
+## ※ !! Deprecated !! 서버는 aiback 리포지토리 사용
+
 import torch
 from transformers import AutoModelForCausalLM, BitsAndBytesConfig, AutoTokenizer, TrainingArguments
 from datasets import load_dataset
